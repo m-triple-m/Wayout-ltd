@@ -4,11 +4,9 @@ import { AppShell, Burger, Button, Checkbox, Group, RangeSlider, Title } from '@
 import { useDisclosure } from '@mantine/hooks';
 import React, { useState } from 'react'
 import classes from './sidebar.module.css';
-import UserAuthoriser from '@/context/UserAuth';
 import { SnackbarProvider } from 'notistack';
 import Link from 'next/link';
 import { IconUser } from '@tabler/icons-react';
-import { UserButton } from './UserButton/UserButton';
 import useAppContext from '@/context/AppContext';
 
 const data = [
@@ -27,7 +25,7 @@ const Layout = ({ children }) => {
     const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
     const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
 
-    const [currentUser, setCurrentUser] = useState(JSON.parse(typeof window !== 'undefined'?sessionStorage.getItem('user'):null));
+    const [currentUser, setCurrentUser] = useState(JSON.parse(typeof window !== 'undefined' ? sessionStorage.getItem('user') : null));
 
     const { logout } = useAppContext();
 
@@ -48,42 +46,40 @@ const Layout = ({ children }) => {
 
     return (
         <SnackbarProvider maxSnack={3} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
-            <UserAuthoriser>
-                <AppShell
-                    header={{ height: 0 }}
-                    navbar={{
-                        width: 300,
-                        breakpoint: 'sm',
-                        collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
-                    }}
-                    padding="md"
-                    layout="alt"
-                >
+            <AppShell
+                header={{ height: 0 }}
+                navbar={{
+                    width: 300,
+                    breakpoint: 'sm',
+                    collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
+                }}
+                padding="md"
+                layout="alt"
+            >
 
-                    <AppShell.Header>
-                        {/* <AdminNavbar /> */}
-                        <Group h="100%" px="md">
-                            <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
-                            <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
+                <AppShell.Header>
+                    {/* <AdminNavbar /> */}
+                    <Group h="100%" px="md">
+                        <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
+                        <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
 
-                        </Group>
-                    </AppShell.Header>
+                    </Group>
+                </AppShell.Header>
 
-                    <AppShell.Navbar p="md">
-                        <Title order={3}>Admin Options</Title>
-                        {links}
-                        <div className={classes.footer}>
-                            {/* <UserButton user={currentUser} /> */}
-                            <Button fullWidth rightSection={<IconLogout />} py={10} color='red' variant='light' onClick={logout}>Logout</Button>
+                <AppShell.Navbar p="md">
+                    <Title order={3}>Admin Options</Title>
+                    {links}
+                    <div className={classes.footer}>
+                        {/* <UserButton user={currentUser} /> */}
+                        <Button fullWidth rightSection={<IconLogout />} py={10} color='red' variant='light' onClick={logout}>Logout</Button>
 
-                        </div>
-                    </AppShell.Navbar>
+                    </div>
+                </AppShell.Navbar>
 
-                    <AppShell.Main>
-                        {children}
-                    </AppShell.Main>
-                </AppShell>
-            </UserAuthoriser>
+                <AppShell.Main>
+                    {children}
+                </AppShell.Main>
+            </AppShell>
         </SnackbarProvider>
     )
 }
